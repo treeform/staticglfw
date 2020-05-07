@@ -23,6 +23,10 @@ jobs:
 
     - uses: jiro4989/setup-nim-action@v1.0.2
 
+    - uses: openrndr/setup-opengl@v1
+
+    - run: xvfb-run glxinfo
+
     - name: Install GUI
       run: |
         sudo apt update
