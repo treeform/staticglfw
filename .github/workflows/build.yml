@@ -25,8 +25,6 @@ jobs:
 
     - uses: openrndr/setup-opengl@v1
 
-    - run: xvfb-run glxinfo
-
     - name: Install GUI
       run: |
         sudo apt update
