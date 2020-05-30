@@ -9,7 +9,3 @@ nimcache
 *.pdb
 *.ilk
 .*
-
-# ignore steamworks SDK code
-steamworks_sdk_142
-steamworks_sdk_142.zip

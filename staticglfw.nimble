@@ -1,5 +1,5 @@
 
-version     = "4.0.1"
+version     = "4.1.0"
 author      = "Andre von Houck"
 description = "Static GLFW 3 wrapper for Nim"
 license     = "MIT"
