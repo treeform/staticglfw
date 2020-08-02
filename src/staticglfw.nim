@@ -494,16 +494,13 @@ proc windowShouldClose*(window: Window): cint {.cdecl, importc: "glfwWindowShoul
 proc windowHint*(target: cint, hint: cint) {.cdecl, importc: "glfwWindowHint".}
 
 # Vulkan types & functions
-when not defined(VkInstance):
-    type VkInstance* = pointer
-when not defined(VkPhysicalDevice):
-    type VkPhysicalDevice* = pointer
-when not defined(VkAllocationCallbacks):
-    type VkAllocationCallbacks* = pointer
-when not defined(VkSurfaceKHR):
-    type VkSurfaceKHR* = pointer
-when not defined(VkResult):
-    type VkResult* = enum
+when defined(vulkanTypes):
+    type 
+      VkInstance* = pointer
+      VkPhysicalDevice* = pointer
+      VkAllocationCallbacks* = pointer
+      VkSurfaceKHR* = pointer
+      VkResult* = enum
         VK_ERROR_FRAGMENTED_POOL = -12
         VK_ERROR_FORMAT_NOT_SUPPORTED = -11
         VK_ERROR_TOO_MANY_OBJECTS = -10
