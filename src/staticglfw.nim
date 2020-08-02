@@ -494,30 +494,34 @@ proc windowShouldClose*(window: Window): cint {.cdecl, importc: "glfwWindowShoul
 proc windowHint*(target: cint, hint: cint) {.cdecl, importc: "glfwWindowHint".}
 
 # Vulkan types & functions
-type
-  VkInstance* = pointer
-  VkPhysicalDevice* = pointer
-  VkAllocationCallbacks* = pointer
-  VkSurfaceKHR* = pointer
-  VkResult* = enum
-    VK_ERROR_FRAGMENTED_POOL = -12
-    VK_ERROR_FORMAT_NOT_SUPPORTED = -11
-    VK_ERROR_TOO_MANY_OBJECTS = -10
-    VK_ERROR_INCOMPATIBLE_DRIVER = -9
-    VK_ERROR_FEATURE_NOT_PRESENT = -8
-    VK_ERROR_EXTENSION_NOT_PRESENT = -7
-    VK_ERROR_LAYER_NOT_PRESENT = -6
-    VK_ERROR_MEMORY_MAP_FAILED = -5
-    VK_ERROR_DEVICE_LOST = -4
-    VK_ERROR_INITIALIZATION_FAILED = -3
-    VK_ERROR_OUT_OF_DEVICE_MEMORY = -2
-    VK_ERROR_OUT_OF_HOST_MEMORY = -1
-    VK_SUCCESS = 0
-    VK_NOT_READY = 1
-    VK_TIMEOUT = 2
-    VK_EVENT_SET = 3
-    VK_EVENT_RESET = 4
-    VK_INCOMPLETE = 5
+when not defined(VkInstance):
+    type VkInstance* = pointer
+when not defined(VkPhysicalDevice):
+    type VkPhysicalDevice* = pointer
+when not defined(VkAllocationCallbacks):
+    type VkAllocationCallbacks* = pointer
+when not defined(VkSurfaceKHR):
+    type VkSurfaceKHR* = pointer
+when not defined(VkResult):
+    type VkResult* = enum
+        VK_ERROR_FRAGMENTED_POOL = -12
+        VK_ERROR_FORMAT_NOT_SUPPORTED = -11
+        VK_ERROR_TOO_MANY_OBJECTS = -10
+        VK_ERROR_INCOMPATIBLE_DRIVER = -9
+        VK_ERROR_FEATURE_NOT_PRESENT = -8
+        VK_ERROR_EXTENSION_NOT_PRESENT = -7
+        VK_ERROR_LAYER_NOT_PRESENT = -6
+        VK_ERROR_MEMORY_MAP_FAILED = -5
+        VK_ERROR_DEVICE_LOST = -4
+        VK_ERROR_INITIALIZATION_FAILED = -3
+        VK_ERROR_OUT_OF_DEVICE_MEMORY = -2
+        VK_ERROR_OUT_OF_HOST_MEMORY = -1
+        VK_SUCCESS = 0
+        VK_NOT_READY = 1
+        VK_TIMEOUT = 2
+        VK_EVENT_SET = 3
+        VK_EVENT_RESET = 4
+        VK_INCOMPLETE = 5
 
 proc vulkanSupported*(): cint {.cdecl, importc: "glfwVulkanSupported".}
 proc getInstanceProcAddress*(instance: VkInstance, procname: cstring): VKProc {.cdecl, importc: "glfwGetInstanceProcAddress".}
