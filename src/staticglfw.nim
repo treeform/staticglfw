@@ -390,9 +390,9 @@ type
     size*: cuint
 
   Image* {.pure, final.} = object
-    width: cint
-    height: cint
-    pixels: cstring
+    width*: cint
+    height*: cint
+    pixels*: cstring
 
 # Methods
 proc init*(): cint {.cdecl, importc: "glfwInit".}
