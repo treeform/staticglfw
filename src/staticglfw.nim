@@ -389,10 +389,10 @@ type
     blue*: ptr cushort
     size*: cuint
 
-  Image* {.pure, final.} = ptr object
+  Image* {.pure, final.} = object
     width: cint
     height: cint
-    pixels: seq[byte]
+    pixels: cstring
 
 # Methods
 proc init*(): cint {.cdecl, importc: "glfwInit".}
@@ -403,7 +403,7 @@ proc getRequiredInstanceExtensions*(count: ptr cuint): ptr cstring {.cdecl, impo
 proc extensionSupported*(extension: cstring): cint {.cdecl, importc: "glfwExtensionSupported".}
 proc getProcAddress*(procname: cstring): GLProc {.cdecl, importc: "glfwGetProcAddress".}
 # Cursor functions
-proc createCursor*(image: Image, xhot, yhot: cint): CursorHandle {.cdecl, importc: "glfwCreateCursor".}
+proc createCursor*(image: ptr Image, xhot, yhot: cint): CursorHandle {.cdecl, importc: "glfwCreateCursor".}
 proc createStandardCursor*(shape: cint): CursorHandle {.cdecl, importc: "glfwCreateStandardCursor".}
 proc destroyCursor*(cusor: CursorHandle) {.cdecl, importc: "glfwDestroyCursor".}
 # Time functions
@@ -476,7 +476,7 @@ proc setScrollCallback*(window: Window, cbfun: ScrollFun): ScrollFun {.cdecl, im
 proc setWindowAspectRatio*(window: Window, numer, denom: cint) {.cdecl, importc: "glfwSetWindowAspectRatio".}
 proc setWindowCloseCallback*(window: Window, cbfun: WindowCloseFun): WindowCloseFun {.cdecl, importc: "glfwSetWindowCloseCallback".}
 proc setWindowFocusCallback*(window: Window, cbfun: WindowFocusFun): WindowFocusFun {.cdecl, importc: "glfwSetWindowFocusCallback".}
-proc setWindowIcon*(window: Window, count: cint, image: Image) {.cdecl, importc: "glfwSetWindowIcon".}
+proc setWindowIcon*(window: Window, count: cint, image: ptr Image) {.cdecl, importc: "glfwSetWindowIcon".}
 proc setWindowIconifyCallback*(window: Window, cbfun: WindowIconifyFun): WindowIconifyFun {.cdecl, importc: "glfwSetWindowIconifyCallback".}
 proc setWindowMonitor*(window: Window, monitor: Monitor, xpos, ypos, width, height: cint) {.cdecl, importc: "glfwSetWindowMonitor".}
 proc setWindowPos*(window: Window, xpos: cint, ypos: cint) {.cdecl, importc: "glfwSetWindowPos".}
