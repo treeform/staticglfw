@@ -89,8 +89,8 @@ else:
 
 const
   VERSION_MAJOR* = 3
-  VERSION_MINOR* = 2
-  VERSION_REVISION* = 0
+  VERSION_MINOR* = 3
+  VERSION_REVISION* = 2
 
   TRUE* = 1
   FALSE* = 0
