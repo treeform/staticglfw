@@ -9,3 +9,7 @@ nimcache
 *.pdb
 *.ilk
 .*
+
+# generated wayland protocol source files
+wayland-*-protocol.c
+wayland-*-protocol.h

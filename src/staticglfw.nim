@@ -37,10 +37,37 @@ else:
       compile: "staticglfw/osmesa_context.c"
     .}
   elif defined(linux):
-    {.passL: "-pthread -lGL -lX11 -lXrandr -lXxf86vm -lXi -lXcursor -lm -lXinerama".}
 
     when defined(wayland):
+      import std / os
+      proc compileWaylandHeader(prot: string, protSrc: string, protDest: string): bool {.compileTime.} =
+        result = true
+        var fn = "/usr/share/wayland-protocols/" & protSrc & ".xml"
+        let fh = currentSourcePath() /../ "staticglfw/wayland-" & protDest & "-client-protocol.h"
+        let fc = currentSourcePath() /../ "staticglfw/wayland-" & protDest & "-protocol.c"
+        if not fileExists(fh):
+          let (outp0, exc0) = gorgeEx "wayland-scanner client-header " & fn & " " & fh 
+          if exc0 != 0:
+            echo outp0
+            result = false
+          let (outp1, exc1) = gorgeEx "wayland-scanner private-code " & fn & " " & fc
+          if exc1 != 0:
+            echo outp1
+            result = false      
+        
+      proc compileWaylandHeaders: bool  {.compileTime.} =
+        result = true
+        for prot in ["viewporter", "xdg-shell"]:
+          result = result and compileWaylandHeader(prot, "stable" / prot / prot, prot)
+        for prot in ["idle-inhibit", "relative-pointer", "pointer-constraints"]:
+          result = result and compileWaylandHeader(prot, "unstable" / prot / prot & "-unstable-v1", prot & "-unstable-v1")
+        result = result and compileWaylandHeader("xdg-decoration", "unstable" / "xdg-decoration" / "xdg-decoration-unstable-v1", "xdg-decoration")
+        
+      when not compileWaylandHeaders():
+        {.error("Could not compile wayland protocol C files, is package wayland-protocols installed ?").}
+              
       {.
+        passL: "-lwayland-client",
         passC: "-D_GLFW_WAYLAND",
         compile: "staticglfw/wl_init.c",
         compile: "staticglfw/wl_monitor.c",
@@ -49,10 +76,19 @@ else:
         compile: "staticglfw/posix_thread.c",
         compile: "staticglfw/xkb_unicode.c",
         compile: "staticglfw/egl_context.c",
-        compile: "staticglfw/osmesa_context.c"
+        compile: "staticglfw/osmesa_context.c",
+        compile: "staticglfw/wayland-idle-inhibit-unstable-v1-protocol.c",
+        compile: "staticglfw/wayland-relative-pointer-unstable-v1-protocol.c",
+        compile: "staticglfw/wayland-xdg-decoration-protocol.c",
+        compile: "staticglfw/wayland-pointer-constraints-unstable-v1-protocol.c",
+        compile: "staticglfw/wayland-viewporter-protocol.c",
+        compile: "staticglfw/wayland-xdg-shell-protocol.c"
       .}
+      # workaround undefined symbol 
+      proc glfwPlatformCloseIme() {.exportc:"_$1".} = discard
     else:
       {.
+        passL: "-pthread -lGL -lX11 -lXrandr -lXxf86vm -lXi -lXcursor -lm -lXinerama",
         passC: "-D_GLFW_X11",
         compile: "staticglfw/x11_init.c",
         compile: "staticglfw/x11_monitor.c",
