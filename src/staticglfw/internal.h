@@ -634,6 +634,8 @@ const char* _glfwPlatformGetClipboardString(void);
 int _glfwPlatformPollJoystick(_GLFWjoystick* js, int mode);
 void _glfwPlatformUpdateGamepadGUID(char* guid);
 
+GLFWAPI void _glfwPlatformCloseIme(GLFWwindow* handle);
+
 uint64_t _glfwPlatformGetTimerValue(void);
 uint64_t _glfwPlatformGetTimerFrequency(void);
 
