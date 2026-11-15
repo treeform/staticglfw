@@ -1359,7 +1359,10 @@ GLFWAPI uint64_t glfwGetTimerFrequency(void)
     return _glfwPlatformGetTimerFrequency();
 }
 
-GLFWAPI void glfwCloseIme(void)
+GLFWAPI void glfwCloseIme(GLFWwindow* handle)
 {
-    _glfwPlatformCloseIme();
+    assert(handle != NULL);
+
+    _GLFW_REQUIRE_INIT();
+    _glfwPlatformCloseIme(handle);
 }
